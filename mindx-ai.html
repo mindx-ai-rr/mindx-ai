@@ -1,0 +1,2324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MINDX AI — Platform AI untuk Customer Service, CRM & Collection UMKM Indonesia</title>
+  <meta name="description" content="Satu AI Suite untuk handle semua urusan customer lo. Chatbot 24/7, CRM unified, dan tagihan otomatis — semua di WhatsApp. Mulai dari Rp 1.5jt/bulan." />
+  <meta property="og:title" content="MINDX AI — AI Suite untuk UMKM Indonesia" />
+  <meta property="og:description" content="Chat. CRM. Tagih. Satu platform AI yang ngerti Bahasa Indonesia. Mulai trial 14 hari gratis." />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            navy: { 950: '#050b1c', 900: '#0a1428', 800: '#111d3a' },
+            brand: {
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              800: '#1e40af', 900: '#1e3a8a'
+            },
+            cyan: { 400: '#22d3ee', 500: '#06b6d4' },
+            money: { 400: '#34d399', 500: '#10b981', 600: '#059669' },
+            ember: { 400: '#fb923c', 500: '#f97316', 600: '#ea580c' },
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s ease-in-out infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'gradient': 'gradient 8s ease infinite',
+            'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+            'aurora': 'aurora 20s ease infinite',
+          },
+          keyframes: {
+            float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } },
+            gradient: { '0%, 100%': { 'background-position': '0% 50%' }, '50%': { 'background-position': '100% 50%' } },
+            fadeInUp: { '0%': { opacity: 0, transform: 'translateY(30px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+            aurora: { '0%, 100%': { transform: 'translate(0,0) rotate(0deg)' }, '50%': { transform: 'translate(20px,-20px) rotate(180deg)' } },
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #ffffff; color: #0f172a; -webkit-font-smoothing: antialiased; }
+    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+    /* Aurora / mesh gradient background */
+    .aurora-bg {
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59,130,246,0.3), transparent),
+                  radial-gradient(ellipse 60% 50% at 80% 50%, rgba(34,211,238,0.2), transparent),
+                  radial-gradient(ellipse 60% 50% at 20% 80%, rgba(16,185,129,0.15), transparent),
+                  #050b1c;
+    }
+    .aurora-bg::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.4;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.07) 1px, transparent 0);
+      background-size: 32px 32px; pointer-events: none;
+    }
+
+    /* Mesh gradient soft for light sections */
+    .mesh-light {
+      background:
+        radial-gradient(at 0% 0%, rgba(59,130,246,0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(34,211,238,0.05) 0px, transparent 50%),
+        #fbfdff;
+    }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #22d3ee 50%, #34d399 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      background-size: 200% 200%; animation: gradient 8s ease infinite;
+    }
+    .gradient-text-warm {
+      background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* Glass card */
+    .glass {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .glass-light {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(15,23,42,0.06);
+    }
+
+    /* Animated gradient border */
+    .gradient-border {
+      position: relative;
+      background: linear-gradient(#fff,#fff) padding-box,
+                  linear-gradient(135deg, #3b82f6, #22d3ee, #10b981) border-box;
+      border: 2px solid transparent;
+    }
+
+    /* CTA button glow */
+    .btn-glow {
+      box-shadow: 0 10px 30px -10px rgba(249,115,22,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+      transition: all 0.3s ease;
+    }
+    .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -10px rgba(249,115,22,0.6); }
+
+    /* Card hover lift */
+    .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 25px 50px -12px rgba(59,130,246,0.15); }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    /* WhatsApp message bubble animation */
+    .wa-bubble { animation: fadeInUp 0.5s ease-out backwards; }
+
+    /* Floating animation for hero elements */
+    .float-slow { animation: float 6s ease-in-out infinite; }
+    .float-medium { animation: float 4s ease-in-out infinite; animation-delay: 0.5s; }
+    .float-fast { animation: float 5s ease-in-out infinite; animation-delay: 1s; }
+
+    /* Number ticker */
+    .number-ticker { font-variant-numeric: tabular-nums; }
+
+    /* Background grid pattern */
+    .grid-pattern {
+      background-image:
+        linear-gradient(rgba(15,23,42,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,23,42,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* Pricing card pop */
+    .pricing-popular { transform: scale(1.03); }
+    @media (max-width: 768px) { .pricing-popular { transform: none; } }
+
+    /* Marquee for logos */
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .marquee { animation: marquee 30s linear infinite; }
+
+    /* Scroll bar minimal */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Mobile menu transition */
+    .mobile-menu { transition: transform 0.3s ease-out, opacity 0.3s ease-out; }
+    .mobile-menu.hidden-menu { transform: translateX(100%); opacity: 0; pointer-events: none; }
+
+    /* Phone mockup */
+    .phone-frame {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 40px; padding: 12px;
+      box-shadow:
+        0 30px 60px -20px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(255,255,255,0.1) inset,
+        0 0 80px -20px rgba(59,130,246,0.3);
+    }
+    .phone-screen {
+      background: linear-gradient(180deg, #f0fdf4 0%, #ecfdf5 100%);
+      border-radius: 28px; overflow: hidden;
+      min-height: 540px;
+    }
+
+    /* Glow orbs */
+    .glow-orb {
+      position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none;
+    }
+
+    /* FAQ accordion */
+    .faq-item { transition: background 0.2s ease; }
+    .faq-item[open] { background: linear-gradient(135deg, rgba(59,130,246,0.04), rgba(34,211,238,0.04)); }
+    .faq-item summary { cursor: pointer; list-style: none; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item[open] .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform 0.3s ease; }
+
+    /* Roadmap dot */
+    .roadmap-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.2), 0 0 20px rgba(59,130,246,0.5);
+    }
+
+    /* Section divider */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59,130,246,0.2), transparent);
+    }
+
+    /* Scribble underline */
+    .scribble { position: relative; display: inline-block; }
+    .scribble::after {
+      content: ''; position: absolute; left: 0; bottom: -4px; width: 100%; height: 8px;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8'><path d='M0,4 Q25,0 50,4 T100,4' stroke='%23f97316' stroke-width='2' fill='none' stroke-linecap='round'/></svg>") no-repeat center / 100% 100%;
+    }
+
+  </style>
+</head>
+<body class="bg-white text-slate-900 antialiased">
+
+<!-- ====================================================================
+     HEADER / NAVIGATION
+     ==================================================================== -->
+<header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <nav class="flex items-center justify-between h-16 lg:h-20">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="relative w-9 h-9">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#3b82f6"/>
+                <stop offset="50%" stop-color="#22d3ee"/>
+                <stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+            </defs>
+            <rect x="2" y="2" width="36" height="36" rx="10" fill="url(#logoGrad)"/>
+            <path d="M11 28V12L16 12L20 22L24 12L29 12V28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <span class="font-display font-bold text-xl tracking-tight">MINDX<span class="gradient-text">.ai</span></span>
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#solution" class="text-sm font-medium text-slate-700 hover:text-brand-600 transition">Produk</a>
+        <a href="#industries" class="text-sm font-medium text-slate-700 hover:text-brand-600 transition">Industri</a>
+        <a href="#pricing" class="text-sm font-medium text-slate-700 hover:text-brand-600 transition">Pricing</a>
+        <a href="#roi" class="text-sm font-medium text-slate-700 hover:text-brand-600 transition">ROI</a>
+        <a href="#security" class="text-sm font-medium text-slate-700 hover:text-brand-600 transition">Security</a>
+        <a href="#faq" class="text-sm font-medium text-slate-700 hover:text-brand-600 transition">FAQ</a>
+      </div>
+
+      <!-- CTA -->
+      <div class="flex items-center gap-3">
+        <a href="#" class="hidden md:inline-block text-sm font-medium text-slate-700 hover:text-brand-600 transition">Login</a>
+        <a href="#cta" class="inline-flex items-center gap-2 bg-ember-500 text-white px-5 py-2.5 rounded-full text-sm font-semibold btn-glow">
+          <span>Demo Gratis</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+        <!-- Mobile menu button -->
+        <button id="mobileMenuBtn" class="lg:hidden p-2 -mr-2 text-slate-700">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu hidden-menu lg:hidden fixed inset-0 bg-white z-50 p-6">
+    <div class="flex items-center justify-between mb-8">
+      <span class="font-display font-bold text-xl">MINDX<span class="gradient-text">.ai</span></span>
+      <button id="mobileMenuClose" class="p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div class="flex flex-col gap-1">
+      <a href="#solution" class="text-lg font-medium py-4 border-b border-slate-100">Produk</a>
+      <a href="#industries" class="text-lg font-medium py-4 border-b border-slate-100">Industri</a>
+      <a href="#pricing" class="text-lg font-medium py-4 border-b border-slate-100">Pricing</a>
+      <a href="#roi" class="text-lg font-medium py-4 border-b border-slate-100">ROI Calculator</a>
+      <a href="#security" class="text-lg font-medium py-4 border-b border-slate-100">Security</a>
+      <a href="#faq" class="text-lg font-medium py-4 border-b border-slate-100">FAQ</a>
+      <a href="#cta" class="mt-6 bg-ember-500 text-white text-center py-4 rounded-2xl font-semibold">Demo Gratis 14 Hari</a>
+    </div>
+  </div>
+</header>
+
+<!-- ====================================================================
+     HERO SECTION
+     ==================================================================== -->
+<section class="aurora-bg relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+
+  <!-- Floating glow orbs -->
+  <div class="glow-orb bg-brand-500/30 w-96 h-96 -top-20 -left-20"></div>
+  <div class="glow-orb bg-cyan-400/20 w-80 h-80 top-40 right-10"></div>
+  <div class="glow-orb bg-money-500/20 w-72 h-72 bottom-10 left-1/3"></div>
+
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+
+      <!-- Left: Text -->
+      <div class="lg:col-span-7 text-white">
+        <!-- Eyebrow -->
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-8">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-money-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-money-400"></span>
+          </span>
+          <span class="text-xs font-medium text-white/90">🚀 AI Suite untuk UMKM — Mulai Rp 1.5jt/bulan</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] tracking-tight">
+          Satu AI, semua urusan <span class="gradient-text">customer lo</span>. Dari chat sampai bayar.
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="mt-6 text-lg lg:text-xl text-white/80 max-w-2xl leading-relaxed">
+          <span class="font-semibold text-white">Chat. CRM. Tagih.</span> Satu platform AI yang handle customer service 24/7, organize data customer otomatis, dan tagih invoice tanpa drama — semua lewat <span class="text-money-400 font-semibold">WhatsApp</span>.
+        </p>
+
+        <!-- CTAs -->
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a href="#cta" class="inline-flex items-center gap-2 bg-ember-500 text-white px-7 py-4 rounded-full font-semibold btn-glow">
+            <span>Demo Gratis 14 Hari</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+          <a href="#roi" class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-7 py-4 rounded-full font-semibold hover:bg-white/15 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m-6 4h6m-6 4h6M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            <span>Hitung Savings Lo</span>
+          </a>
+        </div>
+
+        <!-- Trust micro-badges -->
+        <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/60">
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-money-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> UU PDP Compliant</div>
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-money-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Meta Business Partner</div>
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-money-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> 14 hari implementasi</div>
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-money-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> No card required</div>
+        </div>
+      </div>
+
+      <!-- Right: Phone mockup + floating cards -->
+      <div class="lg:col-span-5 relative flex justify-center items-center min-h-[600px]">
+
+        <!-- Floating card: Response time -->
+        <div class="float-slow absolute top-0 right-0 lg:right-[-40px] z-20 glass rounded-2xl p-4 w-64 shadow-2xl">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+              <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div class="text-left">
+              <p class="text-xs text-white/60">Avg response time</p>
+              <p class="text-white font-semibold">3 jam → 2 detik</p>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+            <span class="text-white/60">Powered by AI Chat</span>
+            <span class="text-cyan-400 font-medium">24/7 online</span>
+          </div>
+        </div>
+
+        <!-- Floating card: CRM unified -->
+        <div class="float-medium absolute bottom-10 left-0 lg:left-[-30px] z-20 glass rounded-2xl p-4 w-60 shadow-2xl">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
+              <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <div class="text-left">
+              <p class="text-xs text-white/60">Customer database</p>
+              <p class="text-white font-semibold">2.847 contacts unified</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1">
+            <div class="flex -space-x-1.5">
+              <div class="w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 to-rose-400 border border-white/20"></div>
+              <div class="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 border border-white/20"></div>
+              <div class="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-400 to-teal-400 border border-white/20"></div>
+              <div class="w-6 h-6 rounded-full bg-gradient-to-br from-purple-400 to-fuchsia-400 border border-white/20"></div>
+            </div>
+            <span class="text-[10px] text-white/50 ml-2">+ all customer history</span>
+          </div>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="phone-frame w-72 sm:w-80 relative z-10">
+          <div class="phone-screen p-4">
+            <!-- WhatsApp header -->
+            <div class="flex items-center gap-3 pb-3 border-b border-emerald-200/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">M</div>
+              <div class="flex-1">
+                <p class="font-semibold text-sm text-slate-800">MINDX Chat · Klinik Sehat</p>
+                <p class="text-xs text-money-600 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-money-500"></span> typing...
+                </p>
+              </div>
+              <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+            </div>
+
+            <!-- Messages -->
+            <div class="mt-4 space-y-3">
+              <div class="wa-bubble flex justify-end" style="animation-delay: 0.2s">
+                <div class="bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-2xl rounded-tr-md px-3 py-2 max-w-[85%]">
+                  <p class="text-sm text-slate-800">Halo, masih buka? Mau tanya jadwal dokter besok 🙏</p>
+                  <p class="text-[10px] text-slate-500 mt-1 text-right">23:47 ✓✓</p>
+                </div>
+              </div>
+              <div class="wa-bubble" style="animation-delay: 1.0s">
+                <div class="bg-white shadow-sm rounded-2xl rounded-tl-md px-3 py-2 max-w-[85%]">
+                  <p class="text-sm text-slate-800">Halo kak! 👋 Klinik tutup jam 21, tapi saya ready 24/7 🤖</p>
+                  <p class="text-sm text-slate-800 mt-1">Besok jadwal dokter:</p>
+                  <p class="text-xs text-slate-600 mt-1">☀️ Dr. Ani <span class="text-money-600 font-medium">09:00-12:00</span><br/>🌤️ Dr. Budi <span class="text-money-600 font-medium">14:00-17:00</span></p>
+                  <p class="text-[10px] text-slate-400 mt-1">23:47 · responded in 2s</p>
+                </div>
+              </div>
+              <div class="wa-bubble flex justify-end" style="animation-delay: 2.2s">
+                <div class="bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-2xl rounded-tr-md px-3 py-2 max-w-[85%]">
+                  <p class="text-sm text-slate-800">Booking dr. Ani jam 9 yah</p>
+                  <p class="text-[10px] text-slate-500 mt-1 text-right">23:48 ✓✓</p>
+                </div>
+              </div>
+              <div class="wa-bubble" style="animation-delay: 3.2s">
+                <div class="bg-white shadow-sm rounded-2xl rounded-tl-md px-3 py-2 max-w-[85%]">
+                  <p class="text-sm text-slate-800">✓ Booked! Senin 09:00 dengan Dr. Ani</p>
+                  <p class="text-xs text-slate-600 mt-1">Kontak lo udah saya simpan di CRM, kak 📇</p>
+                  <p class="text-[10px] text-slate-400 mt-1">23:48 ✓✓</p>
+                </div>
+              </div>
+              <div class="wa-bubble" style="animation-delay: 4.2s">
+                <div class="mx-auto bg-money-500/10 border border-money-500/30 rounded-xl px-3 py-2 max-w-[90%] text-center">
+                  <p class="text-xs text-money-600 font-semibold flex items-center justify-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Customer satisfied · saved to CRM
+                  </p>
+                  <p class="text-[11px] text-money-700 mt-0.5">Auto-tagged: new_patient</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating mini stat: customer happy -->
+        <div class="float-fast absolute top-1/3 right-[-20px] lg:right-[-60px] z-20 glass rounded-2xl p-3 shadow-2xl">
+          <div class="flex items-center gap-2">
+            <div class="flex -space-x-2">
+              <div class="w-7 h-7 rounded-full bg-gradient-to-br from-pink-400 to-orange-400 border-2 border-white"></div>
+              <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 border-2 border-white"></div>
+              <div class="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-teal-400 border-2 border-white"></div>
+            </div>
+            <span class="text-xs text-white font-medium">+47 served today</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave divider to next section -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-12 lg:h-20">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#ffffff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ====================================================================
+     TRUST BAR
+     ==================================================================== -->
+<section class="relative py-12 bg-white">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <p class="text-center text-xs font-semibold tracking-widest text-slate-500 uppercase mb-8">Dipercaya & disertifikasi oleh</p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 items-center justify-items-center opacity-70">
+
+      <!-- Meta Business Partner -->
+      <div class="flex items-center gap-2 text-slate-700">
+        <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none"><path d="M16 4c-6.6 0-12 5.4-12 12s5.4 12 12 12 12-5.4 12-12S22.6 4 16 4zm0 22c-5.5 0-10-4.5-10-10S10.5 6 16 6s10 4.5 10 10-4.5 10-10 10z" fill="#1877F2"/><path d="M16 10c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6z" fill="#1877F2"/></svg>
+        <div><p class="text-xs font-medium text-slate-500">Meta</p><p class="text-sm font-bold">Business Partner</p></div>
+      </div>
+
+      <!-- AWS Activate -->
+      <div class="flex items-center gap-2 text-slate-700">
+        <svg class="w-8 h-8" viewBox="0 0 32 32" fill="#FF9900"><path d="M9.5 14.5c0 .4.1.7.1 1 .1.3.2.5.4.8 0 .1.1.2.1.3 0 .1-.1.2-.2.3l-.7.5c-.1.1-.2.1-.3.1-.1 0-.2-.1-.3-.2-.2-.2-.3-.4-.4-.6-.1-.2-.2-.5-.4-.8-.9 1-2 1.6-3.3 1.6-.9 0-1.7-.3-2.2-.8s-.8-1.3-.8-2.2.3-1.7 1-2.3c.6-.6 1.5-.9 2.7-.9.4 0 .8 0 1.2.1.4.1.8.1 1.2.2v-.8c0-.8-.2-1.4-.5-1.7-.3-.3-.9-.5-1.7-.5-.4 0-.8 0-1.2.1-.4.1-.8.2-1.2.4-.2.1-.3.1-.4.1-.1 0-.2 0-.2-.2v-.5c0-.1 0-.2.1-.3.1-.1.2-.1.3-.2.4-.2.9-.4 1.4-.5.5-.1 1.1-.2 1.7-.2 1.3 0 2.3.3 2.9.9.6.6.9 1.5.9 2.7v3.6h.3z"/></svg>
+        <div><p class="text-xs font-medium text-slate-500">AWS</p><p class="text-sm font-bold">Activate Partner</p></div>
+      </div>
+
+      <!-- KADIN -->
+      <div class="flex items-center gap-2 text-slate-700">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4-2-2 1-1 1 1 3-3 1 1z"/></svg>
+        </div>
+        <div><p class="text-xs font-medium text-slate-500">KADIN</p><p class="text-sm font-bold">Member</p></div>
+      </div>
+
+      <!-- UU PDP -->
+      <div class="flex items-center gap-2 text-slate-700">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <div><p class="text-xs font-medium text-slate-500">UU PDP</p><p class="text-sm font-bold">Compliant</p></div>
+      </div>
+
+      <!-- Hosted in Indonesia -->
+      <div class="flex items-center gap-2 text-slate-700">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 via-white to-red-500 flex items-center justify-center border border-slate-200">
+          <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div><p class="text-xs font-medium text-slate-500">Hosted</p><p class="text-sm font-bold">in Indonesia 🇮🇩</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     PROBLEM SECTION
+     ==================================================================== -->
+<section class="py-24 lg:py-32 mesh-light relative overflow-hidden">
+  <div class="absolute inset-0 grid-pattern opacity-50"></div>
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-brand-700 bg-brand-50 rounded-full uppercase mb-4">The Problem</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+        Owner UMKM kalah bukan karena <br class="hidden sm:block"/>
+        <span class="scribble">produk jelek</span>. Tapi karena ini.
+      </h2>
+      <p class="mt-6 text-lg text-slate-600 leading-relaxed">
+        3 hal yang setiap hari bikin owner UMKM begadang — dan tiga-tiganya AI bisa selesain.
+      </p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-3 gap-6 lg:gap-8">
+      <!-- Problem 1: CS Overload -->
+      <div class="reveal card-hover group bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-brand-600 flex items-center justify-center mb-6 shadow-lg shadow-cyan-500/30">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        </div>
+        <p class="font-display text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-3">
+          2-4<span class="text-3xl lg:text-4xl ml-2">jam</span>
+        </p>
+        <p class="text-sm font-semibold text-slate-600 mb-4">Avg respon WhatsApp customer di UMKM</p>
+        <p class="text-sm text-slate-500 leading-relaxed">68% calon customer kabur ke kompetitor kalau ga ditanggepin dalam 5 menit. Owner ga bisa standby 24/7.</p>
+        <div class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-700 bg-cyan-50 px-2.5 py-1 rounded-full">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span> Solved by MINDX Chat
+        </div>
+      </div>
+
+      <!-- Problem 2: Lost Customer Data -->
+      <div class="reveal card-hover group bg-white rounded-3xl p-8 border border-slate-100 shadow-sm" style="transition-delay: 0.1s">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center mb-6 shadow-lg shadow-purple-500/30">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <p class="font-display text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-3">
+          30-40<span class="text-3xl lg:text-4xl">%</span>
+        </p>
+        <p class="text-sm font-semibold text-slate-600 mb-4">Repeat business yang hilang karena follow-up jelek</p>
+        <p class="text-sm text-slate-500 leading-relaxed">Customer data tersebar di WA chat, spreadsheet, sticky note. Mau follow-up dormant customer? Datanya hilang.</p>
+        <div class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full">
+          <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> Solved by MINDX CRM
+        </div>
+      </div>
+
+      <!-- Problem 3: Cash Flow -->
+      <div class="reveal card-hover group bg-white rounded-3xl p-8 border border-slate-100 shadow-sm" style="transition-delay: 0.2s">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-money-500 to-emerald-600 flex items-center justify-center mb-6 shadow-lg shadow-money-500/30">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <p class="font-display text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-3">
+          Rp 500<span class="text-3xl lg:text-4xl">T+</span>
+        </p>
+        <p class="text-sm font-semibold text-slate-600 mb-4">Outstanding receivables UMKM Indonesia</p>
+        <p class="text-sm text-slate-500 leading-relaxed">Uang yang harusnya jadi modal kerja, malah nyangkut di customer karena tagihan manual yang ga konsisten.</p>
+        <div class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-money-700 bg-money-50 px-2.5 py-1 rounded-full">
+          <span class="w-1.5 h-1.5 rounded-full bg-money-500"></span> Solved by MINDX Tagih
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SOLUTION SECTION
+     ==================================================================== -->
+<section id="solution" class="py-24 lg:py-32 bg-white relative overflow-hidden">
+
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-brand-700 bg-brand-50 rounded-full uppercase mb-4">Our Product Suite</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+        Tiga AI yang kerja barengan, <br class="hidden sm:block"/>
+        <span class="gradient-text">satu dashboard</span>.
+      </h2>
+      <p class="mt-6 text-lg text-slate-600 leading-relaxed">
+        Chat handle inquiry → CRM organize data → Tagih amankan cash flow. Customer journey lengkap, dari first message sampai final payment.
+      </p>
+    </div>
+
+    <!-- Product Tab Navigation -->
+    <div class="mt-12 flex flex-wrap justify-center gap-2 reveal" id="productTabs">
+      <button data-tab="chat" class="product-tab tab-active inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-sm transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        MINDX Chat
+        <span class="text-[10px] font-bold bg-cyan-500 text-white px-1.5 py-0.5 rounded-full">#1</span>
+      </button>
+      <button data-tab="crm" class="product-tab inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-sm transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        MINDX CRM
+        <span class="text-[10px] font-bold bg-purple-500 text-white px-1.5 py-0.5 rounded-full">#2</span>
+      </button>
+      <button data-tab="tagih" class="product-tab inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-sm transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/></svg>
+        MINDX Tagih
+        <span class="text-[10px] font-bold bg-money-500 text-white px-1.5 py-0.5 rounded-full">#3</span>
+      </button>
+    </div>
+
+    <!-- TAB: MINDX CHAT -->
+    <div id="tab-chat" class="product-content mt-12 reveal">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="space-y-5">
+          <div class="inline-flex items-center gap-2 bg-cyan-50 text-cyan-700 px-3 py-1 rounded-full text-xs font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></span> CUSTOMER SERVICE AI · LIVE NOW
+          </div>
+          <h3 class="font-display text-3xl sm:text-4xl font-bold text-slate-900">AI Chatbot yang ngerti slang Indonesia.</h3>
+          <p class="text-slate-600 leading-relaxed">Handle 70% inquiry customer otomatis di WhatsApp, Instagram, Facebook, dan Website. 24/7 standby, response &lt; 5 detik. Yang ga bisa dihandle? Auto-escalate ke tim lo.</p>
+
+          <div class="space-y-4 pt-2">
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-brand-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Response &lt; 5 detik, 24/7</h4>
+                <p class="text-sm text-slate-600">Bahkan jam 3 pagi customer chat, MINDX standby. 80% reduction in response time.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-purple-500 flex items-center justify-center shadow-lg shadow-brand-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Multi-channel inbox</h4>
+                <p class="text-sm text-slate-600">WhatsApp, Instagram DM, Facebook Messenger, Website chat — semua di satu dashboard tim lo.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Smart product recommendation</h4>
+                <p class="text-sm text-slate-600">Berdasarkan history customer, MINDX kasih rekomendasi produk yang relevan. Conversion naik 40%.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-lg shadow-pink-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Appointment & booking</h4>
+                <p class="text-sm text-slate-600">Untuk klinik, salon, F&B reservation — booking otomatis, confirmation otomatis. No-show rate turun 45%.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#cta" class="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-3 rounded-full font-semibold transition shadow-lg shadow-cyan-500/30">
+              Coba MINDX Chat →
+            </a>
+            <a href="#cta" class="inline-flex items-center gap-2 border border-slate-300 text-slate-700 px-6 py-3 rounded-full font-semibold hover:bg-slate-50 transition">
+              Lihat Demo Video
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Chat Dashboard Mockup -->
+        <div class="relative">
+          <div class="bg-slate-100 rounded-t-2xl px-4 py-3 flex items-center gap-2 border border-slate-200 border-b-0">
+            <div class="flex gap-1.5"><div class="w-3 h-3 rounded-full bg-red-400"></div><div class="w-3 h-3 rounded-full bg-yellow-400"></div><div class="w-3 h-3 rounded-full bg-green-400"></div></div>
+            <div class="ml-4 flex-1 bg-white rounded-md px-3 py-1 text-xs text-slate-400 font-mono">app.mindx.id/chat</div>
+          </div>
+          <div class="bg-gradient-to-br from-cyan-50 to-blue-50 border border-slate-200 rounded-b-2xl p-6 shadow-2xl">
+            <!-- Top stats -->
+            <div class="grid grid-cols-3 gap-3 mb-5">
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">Active Chats</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">23</p>
+                <p class="text-[10px] text-cyan-600 mt-1 font-semibold">▲ 8 from yesterday</p>
+              </div>
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">AI Resolved</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">74<span class="text-xs">%</span></p>
+                <p class="text-[10px] text-money-600 mt-1 font-semibold">No human needed</p>
+              </div>
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">Avg Response</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">2.3<span class="text-xs">s</span></p>
+                <p class="text-[10px] text-money-600 mt-1 font-semibold">↓ from 3 jam</p>
+              </div>
+            </div>
+            <!-- Active conversations list -->
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+              <div class="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
+                <p class="text-xs font-semibold text-slate-700">Active Conversations</p>
+                <span class="text-[10px] text-money-600 font-semibold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-money-500 animate-pulse"></span> Live</span>
+              </div>
+              <div class="divide-y divide-slate-100">
+                <div class="px-4 py-3 flex items-center justify-between hover:bg-slate-50">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-white text-xs font-bold">SA</div>
+                    <div>
+                      <p class="text-xs font-semibold text-slate-800">Sarah · WhatsApp</p>
+                      <p class="text-[10px] text-slate-500 truncate w-40">"Stok jaket size M warna hitam ada?"</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-semibold text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded-full">🤖 AI handling</span>
+                </div>
+                <div class="px-4 py-3 flex items-center justify-between hover:bg-slate-50">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold">DM</div>
+                    <div>
+                      <p class="text-xs font-semibold text-slate-800">Dimas · Instagram</p>
+                      <p class="text-[10px] text-slate-500 truncate w-40">"Lokasi outlet di Bandung dimana?"</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-semibold text-money-700 bg-money-100 px-2 py-0.5 rounded-full">✓ Resolved</span>
+                </div>
+                <div class="px-4 py-3 flex items-center justify-between hover:bg-slate-50">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-rose-400 flex items-center justify-center text-white text-xs font-bold">RN</div>
+                    <div>
+                      <p class="text-xs font-semibold text-slate-800">Rini · Web Chat</p>
+                      <p class="text-[10px] text-slate-500 truncate w-40">"Mau komplain pesanan rusak"</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">⬆ Escalated</span>
+                </div>
+                <div class="px-4 py-3 flex items-center justify-between hover:bg-slate-50">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-400 flex items-center justify-center text-white text-xs font-bold">AG</div>
+                    <div>
+                      <p class="text-xs font-semibold text-slate-800">Agus · WhatsApp</p>
+                      <p class="text-[10px] text-slate-500 truncate w-40">"Booking konsultasi hari ini bisa?"</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-semibold text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded-full">🤖 AI handling</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-cyan-400 to-brand-400 rounded-full blur-3xl opacity-30 -z-10"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: MINDX CRM -->
+    <div id="tab-crm" class="product-content mt-12 reveal hidden">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="space-y-5">
+          <div class="inline-flex items-center gap-2 bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span> UNIFIED CUSTOMER DATABASE · LIVE NOW
+          </div>
+          <h3 class="font-display text-3xl sm:text-4xl font-bold text-slate-900">CRM yang ngerti customer lo, bukan sebaliknya.</h3>
+          <p class="text-slate-600 leading-relaxed">Semua data customer di satu tempat — dari WhatsApp, Instagram, transaksi, sampai history follow-up. Auto-segmentation, auto-tagging, auto-reminder buat re-engage dormant customer.</p>
+
+          <div class="space-y-4 pt-2">
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Auto-capture dari semua channel</h4>
+                <p class="text-sm text-slate-600">Setiap customer yang chat MINDX Chat → otomatis masuk CRM dengan history lengkap. No more data hilang.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-fuchsia-500 to-pink-500 flex items-center justify-center shadow-lg shadow-fuchsia-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Smart segmentation & tagging</h4>
+                <p class="text-sm text-slate-600">VIP customer, dormant (30+ hari ga transact), repeat buyer, new lead — AI auto-tag. Lo tinggal action.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-lg shadow-pink-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Auto-campaign broadcast</h4>
+                <p class="text-sm text-slate-600">Promo bulanan, follow-up dormant, ulang tahun customer — semua bisa di-schedule dengan tone yang custom per segment.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-lg shadow-rose-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Sales pipeline & analytics</h4>
+                <p class="text-sm text-slate-600">Track lead → qualified → won. Lihat conversion rate, sales velocity, customer LTV. Repeat purchase naik 3x.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#cta" class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full font-semibold transition shadow-lg shadow-purple-500/30">
+              Coba MINDX CRM →
+            </a>
+            <a href="#cta" class="inline-flex items-center gap-2 border border-slate-300 text-slate-700 px-6 py-3 rounded-full font-semibold hover:bg-slate-50 transition">
+              Lihat Demo Video
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: CRM Dashboard Mockup -->
+        <div class="relative">
+          <div class="bg-slate-100 rounded-t-2xl px-4 py-3 flex items-center gap-2 border border-slate-200 border-b-0">
+            <div class="flex gap-1.5"><div class="w-3 h-3 rounded-full bg-red-400"></div><div class="w-3 h-3 rounded-full bg-yellow-400"></div><div class="w-3 h-3 rounded-full bg-green-400"></div></div>
+            <div class="ml-4 flex-1 bg-white rounded-md px-3 py-1 text-xs text-slate-400 font-mono">app.mindx.id/crm</div>
+          </div>
+          <div class="bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-slate-200 rounded-b-2xl p-6 shadow-2xl">
+            <!-- Customer summary -->
+            <div class="grid grid-cols-3 gap-3 mb-5">
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">Total Contacts</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">2.847</p>
+                <p class="text-[10px] text-purple-600 mt-1 font-semibold">+128 this month</p>
+              </div>
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">VIP Customer</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">183</p>
+                <p class="text-[10px] text-money-600 mt-1 font-semibold">6.4% of total</p>
+              </div>
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">Repeat Rate</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">38<span class="text-xs">%</span></p>
+                <p class="text-[10px] text-money-600 mt-1 font-semibold">↑ from 12%</p>
+              </div>
+            </div>
+
+            <!-- Customer 360 view -->
+            <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+              <div class="flex items-start gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white font-bold">SR</div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2">
+                    <p class="text-sm font-bold text-slate-900">Sarah Putri</p>
+                    <span class="text-[10px] font-semibold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">⭐ VIP</span>
+                    <span class="text-[10px] font-semibold bg-money-100 text-money-700 px-2 py-0.5 rounded-full">Repeat Buyer</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500">+62 812-xxxx-3456 · Bandung</p>
+                  <div class="mt-2 grid grid-cols-3 gap-2 text-[10px]">
+                    <div><p class="text-slate-500">Total Spent</p><p class="font-bold text-slate-900">Rp 8.4jt</p></div>
+                    <div><p class="text-slate-500">Transactions</p><p class="font-bold text-slate-900">12 orders</p></div>
+                    <div><p class="text-slate-500">Last Active</p><p class="font-bold text-money-600">2 days ago</p></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Segments -->
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+              <div class="px-4 py-2 border-b border-slate-100">
+                <p class="text-xs font-semibold text-slate-700">Customer Segments</p>
+              </div>
+              <div class="divide-y divide-slate-100">
+                <div class="px-4 py-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                    <p class="text-xs font-semibold text-slate-800">VIP Customer</p>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-500">183</span>
+                    <button class="text-[10px] font-semibold text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full">Broadcast</button>
+                  </div>
+                </div>
+                <div class="px-4 py-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-rose-500"></div>
+                    <p class="text-xs font-semibold text-slate-800">Dormant 30d+</p>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-500">412</span>
+                    <button class="text-[10px] font-semibold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-full">Re-engage</button>
+                  </div>
+                </div>
+                <div class="px-4 py-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-cyan-500"></div>
+                    <p class="text-xs font-semibold text-slate-800">New Lead 7d</p>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-500">94</span>
+                    <button class="text-[10px] font-semibold text-cyan-600 bg-cyan-100 px-2 py-0.5 rounded-full">Nurture</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full blur-3xl opacity-30 -z-10"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: MINDX TAGIH -->
+    <div id="tab-tagih" class="product-content mt-12 reveal hidden">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="space-y-5">
+          <div class="inline-flex items-center gap-2 bg-money-50 text-money-700 px-3 py-1 rounded-full text-xs font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-money-500 animate-pulse"></span> AI COLLECTION REMINDER · LIVE NOW
+          </div>
+          <h3 class="font-display text-3xl sm:text-4xl font-bold text-slate-900">Tagih utang tanpa rusak hubungan customer.</h3>
+          <p class="text-slate-600 leading-relaxed">Reminder otomatis lewat WhatsApp dengan tone Indonesia banget — sopan tapi tegas. DSO turun rata-rata 17 hari dalam 90 hari pertama. Cash flow lo lega.</p>
+
+          <div class="space-y-4 pt-2">
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-money-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-money-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Auto-reminder 3-sequence</h4>
+                <p class="text-sm text-slate-600">H-3 (gentle), H-0 (firm), H+3 (escalation). Kirim di waktu optimal — pagi atau jam makan siang.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Tone: santai, semi-formal, formal</h4>
+                <p class="text-sm text-slate-600">"Pak Hendro, bisa minta tolong dicek invoice-nya ya 🙏" vs formal. Pilih sesuai relationship.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Aging report dashboard</h4>
+                <p class="text-sm text-slate-600">DSO breakdown by bucket (0-30, 31-60, 61-90, 90+). Filter, export, eksekusi.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-brand-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-slate-900">Integrasi Accurate / Jurnal / Mekari</h4>
+                <p class="text-sm text-slate-600">Invoice sync otomatis dari accounting software lo. Atau upload Excel kalau masih jadul — fine 👌</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#cta" class="inline-flex items-center gap-2 bg-money-600 hover:bg-money-700 text-white px-6 py-3 rounded-full font-semibold transition shadow-lg shadow-money-500/30">
+              Coba MINDX Tagih →
+            </a>
+            <a href="#cta" class="inline-flex items-center gap-2 border border-slate-300 text-slate-700 px-6 py-3 rounded-full font-semibold hover:bg-slate-50 transition">
+              Lihat Demo Video
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Tagih Dashboard (original mockup, kept) -->
+        <div class="relative">
+          <div class="bg-slate-100 rounded-t-2xl px-4 py-3 flex items-center gap-2 border border-slate-200 border-b-0">
+            <div class="flex gap-1.5"><div class="w-3 h-3 rounded-full bg-red-400"></div><div class="w-3 h-3 rounded-full bg-yellow-400"></div><div class="w-3 h-3 rounded-full bg-green-400"></div></div>
+            <div class="ml-4 flex-1 bg-white rounded-md px-3 py-1 text-xs text-slate-400 font-mono">app.mindx.id/tagih</div>
+          </div>
+          <div class="bg-gradient-to-br from-slate-50 to-emerald-50 border border-slate-200 rounded-b-2xl p-6 shadow-2xl">
+            <div class="grid grid-cols-3 gap-3 mb-5">
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">Total DSO</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">47 <span class="text-xs font-normal text-slate-400">hari</span></p>
+                <p class="text-[10px] text-money-600 mt-1 font-semibold">↓ 17 hari (90 hari)</p>
+              </div>
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">Outstanding</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">Rp 318<span class="text-xs font-normal text-slate-400">jt</span></p>
+                <p class="text-[10px] text-money-600 mt-1 font-semibold">↓ Rp 142jt</p>
+              </div>
+              <div class="bg-white rounded-xl p-3 border border-slate-200">
+                <p class="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">On-time Rate</p>
+                <p class="font-display text-2xl font-bold text-slate-900 mt-1">82<span class="text-xs font-normal text-slate-400">%</span></p>
+                <p class="text-[10px] text-money-600 mt-1 font-semibold">↑ from 64%</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-slate-200 mb-4">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <p class="text-xs text-slate-500">DSO Trend (12 weeks)</p>
+                  <p class="text-sm font-semibold text-slate-900">Days Sales Outstanding</p>
+                </div>
+              </div>
+              <svg viewBox="0 0 400 100" class="w-full h-24">
+                <defs>
+                  <linearGradient id="chartGrad2" x1="0" y1="0" x2="0" y2="100">
+                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <line x1="0" y1="25" x2="400" y2="25" stroke="#e2e8f0" stroke-dasharray="2,2"/>
+                <line x1="0" y1="50" x2="400" y2="50" stroke="#e2e8f0" stroke-dasharray="2,2"/>
+                <line x1="0" y1="75" x2="400" y2="75" stroke="#e2e8f0" stroke-dasharray="2,2"/>
+                <path d="M0,30 L33,32 L66,38 L100,42 L133,50 L166,55 L200,62 L233,65 L266,70 L300,72 L333,74 L366,76 L400,78 L400,100 L0,100 Z" fill="url(#chartGrad2)"/>
+                <path d="M0,30 L33,32 L66,38 L100,42 L133,50 L166,55 L200,62 L233,65 L266,70 L300,72 L333,74 L366,76 L400,78" stroke="#10b981" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <circle cx="400" cy="78" r="4" fill="#10b981"/>
+                <circle cx="400" cy="78" r="8" fill="#10b981" opacity="0.2"/>
+              </svg>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+              <div class="px-4 py-2 border-b border-slate-100"><p class="text-xs font-semibold text-slate-700">Recent Reminders</p></div>
+              <div class="divide-y divide-slate-100">
+                <div class="px-4 py-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center text-white text-xs font-bold">HD</div>
+                    <div><p class="text-xs font-semibold text-slate-800">Pak Hendro</p><p class="text-[10px] text-slate-500">INV-0142 · Rp 42.5jt</p></div>
+                  </div>
+                  <span class="text-[10px] font-semibold text-money-600 bg-money-500/10 px-2 py-0.5 rounded-full">Paid</span>
+                </div>
+                <div class="px-4 py-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold">SR</div>
+                    <div><p class="text-xs font-semibold text-slate-800">Bu Sari</p><p class="text-[10px] text-slate-500">INV-0139 · Rp 18.2jt</p></div>
+                  </div>
+                  <span class="text-[10px] font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">Reminder H-0</span>
+                </div>
+                <div class="px-4 py-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-fuchsia-400 flex items-center justify-center text-white text-xs font-bold">BD</div>
+                    <div><p class="text-xs font-semibold text-slate-800">Pak Budi</p><p class="text-[10px] text-slate-500">INV-0135 · Rp 27.8jt</p></div>
+                  </div>
+                  <span class="text-[10px] font-semibold text-red-700 bg-red-100 px-2 py-0.5 rounded-full">Overdue +5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-money-400 to-cyan-400 rounded-full blur-3xl opacity-30 -z-10"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Tab styles -->
+<style>
+  .product-tab { background: #f1f5f9; color: #64748b; }
+  .product-tab:hover { background: #e2e8f0; }
+  .product-tab.tab-active { background: linear-gradient(135deg, #1e293b, #0f172a); color: white; box-shadow: 0 10px 20px -10px rgba(15,23,42,0.4); }
+  .product-content { animation: fadeInUp 0.4s ease-out; }
+</style>
+
+<!-- ====================================================================
+     HOW IT WORKS
+     ==================================================================== -->
+<section class="py-24 lg:py-32 mesh-light relative">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-brand-700 bg-brand-50 rounded-full uppercase mb-4">How It Works</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+        Setup 14 hari. <span class="gradient-text-warm">Hasil dari bulan pertama.</span>
+      </h2>
+      <p class="mt-6 text-lg text-slate-600">3 langkah simple, ga perlu IT khusus, ga perlu pelatihan panjang.</p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="mt-20 relative">
+      <!-- Connecting line (desktop only) -->
+      <div class="hidden md:block absolute left-0 right-0 top-12 h-0.5 bg-gradient-to-r from-brand-200 via-cyan-300 to-money-300"></div>
+
+      <div class="grid md:grid-cols-3 gap-12 md:gap-8">
+        <!-- Step 1 -->
+        <div class="reveal text-center">
+          <div class="relative inline-flex items-center justify-center w-24 h-24 mb-6">
+            <div class="absolute inset-0 bg-gradient-to-br from-brand-500 to-cyan-500 rounded-3xl rotate-6 opacity-20"></div>
+            <div class="relative w-24 h-24 bg-gradient-to-br from-brand-500 to-cyan-500 rounded-3xl flex items-center justify-center shadow-xl shadow-brand-500/30">
+              <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            </div>
+          </div>
+          <p class="text-xs font-semibold tracking-widest text-brand-600 uppercase mb-2">STEP 01 · Hari 1</p>
+          <h3 class="font-display text-2xl font-bold text-slate-900 mb-3">Upload Invoice</h3>
+          <p class="text-slate-600 leading-relaxed">Upload daftar invoice via Excel/CSV. Atau auto-sync kalau lo pakai Accurate, Jurnal, Mekari. Setup credentials WhatsApp Business — 1 jam beres.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="reveal text-center" style="transition-delay: 0.15s">
+          <div class="relative inline-flex items-center justify-center w-24 h-24 mb-6">
+            <div class="absolute inset-0 bg-gradient-to-br from-cyan-500 to-money-500 rounded-3xl -rotate-6 opacity-20"></div>
+            <div class="relative w-24 h-24 bg-gradient-to-br from-cyan-500 to-money-500 rounded-3xl flex items-center justify-center shadow-xl shadow-cyan-500/30">
+              <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            </div>
+          </div>
+          <p class="text-xs font-semibold tracking-widest text-cyan-600 uppercase mb-2">STEP 02 · Hari 2-30</p>
+          <h3 class="font-display text-2xl font-bold text-slate-900 mb-3">Reminder Otomatis</h3>
+          <p class="text-slate-600 leading-relaxed">MINDX kirim reminder WhatsApp di waktu optimal (pagi/jam makan siang), dengan tone yang sesuai. Customer respon? MINDX log otomatis. Ga respon? Escalate.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="reveal text-center" style="transition-delay: 0.3s">
+          <div class="relative inline-flex items-center justify-center w-24 h-24 mb-6">
+            <div class="absolute inset-0 bg-gradient-to-br from-money-500 to-emerald-600 rounded-3xl rotate-6 opacity-20"></div>
+            <div class="relative w-24 h-24 bg-gradient-to-br from-money-500 to-emerald-600 rounded-3xl flex items-center justify-center shadow-xl shadow-money-500/30">
+              <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            </div>
+          </div>
+          <p class="text-xs font-semibold tracking-widest text-money-600 uppercase mb-2">STEP 03 · Hari 30+</p>
+          <h3 class="font-display text-2xl font-bold text-slate-900 mb-3">Pantau DSO Turun</h3>
+          <p class="text-slate-600 leading-relaxed">Dashboard tunjukin DSO turun, cash flow membaik. Average customer kami nurunin DSO 12-17 hari dalam 90 hari. Owner time saved 5+ jam/minggu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     ROI CALCULATOR (Interactive!)
+     ==================================================================== -->
+<section id="roi" class="py-24 lg:py-32 relative overflow-hidden bg-gradient-to-br from-navy-900 via-navy-950 to-brand-900">
+  <!-- Background pattern -->
+  <div class="absolute inset-0 opacity-30">
+    <div class="absolute top-10 left-10 w-72 h-72 bg-brand-500 rounded-full mix-blend-screen filter blur-3xl"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl"></div>
+    <div class="absolute top-1/2 left-1/2 w-72 h-72 bg-money-500 rounded-full mix-blend-screen filter blur-3xl"></div>
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 rounded-full uppercase mb-4">ROI Calculator</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+        Hitung berapa <span class="gradient-text">cash flow</span> yang bisa lo unlock.
+      </h2>
+      <p class="mt-6 text-lg text-white/70">Estimasi based on rata-rata customer MINDX di industri serupa. Bukan janji manis — angka real.</p>
+    </div>
+
+    <div class="mt-16 max-w-5xl mx-auto reveal">
+      <div class="glass rounded-3xl p-6 md:p-10 grid lg:grid-cols-2 gap-10 lg:gap-12">
+        <!-- Input panel -->
+        <div>
+          <h3 class="font-display text-xl font-semibold text-white mb-6">Input bisnis lo:</h3>
+
+          <div class="space-y-6">
+            <!-- Outstanding receivables -->
+            <div>
+              <label class="flex items-center justify-between text-sm font-medium text-white/90 mb-2">
+                <span>Outstanding receivables saat ini</span>
+                <span id="outRecLabel" class="text-cyan-300 font-bold">Rp 500jt</span>
+              </label>
+              <input type="range" id="outstandingInput" min="100000000" max="5000000000" step="50000000" value="500000000" class="w-full">
+              <div class="flex justify-between text-xs text-white/50 mt-1"><span>100jt</span><span>5M</span></div>
+            </div>
+
+            <!-- DSO -->
+            <div>
+              <label class="flex items-center justify-between text-sm font-medium text-white/90 mb-2">
+                <span>DSO rata-rata saat ini</span>
+                <span id="dsoLabel" class="text-cyan-300 font-bold">60 hari</span>
+              </label>
+              <input type="range" id="dsoInput" min="30" max="120" step="1" value="60" class="w-full">
+              <div class="flex justify-between text-xs text-white/50 mt-1"><span>30 hari</span><span>120 hari</span></div>
+            </div>
+
+            <!-- Invoice volume -->
+            <div>
+              <label class="flex items-center justify-between text-sm font-medium text-white/90 mb-2">
+                <span>Jumlah invoice aktif</span>
+                <span id="invoiceLabel" class="text-cyan-300 font-bold">100 invoice</span>
+              </label>
+              <input type="range" id="invoiceInput" min="20" max="2000" step="10" value="100" class="w-full">
+              <div class="flex justify-between text-xs text-white/50 mt-1"><span>20</span><span>2000</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output panel -->
+        <div class="bg-gradient-to-br from-white/5 to-white/0 border border-white/10 rounded-2xl p-6 lg:p-8">
+          <p class="text-xs font-semibold tracking-widest text-cyan-300 uppercase mb-4">Estimasi dengan MINDX Tagih</p>
+
+          <!-- Big number: Cash unlocked -->
+          <div class="mb-6">
+            <p class="text-sm text-white/60 mb-1">Cash unlocked (monthly)</p>
+            <p class="font-display text-5xl lg:text-6xl font-bold text-white number-ticker">
+              <span id="cashUnlocked">Rp 142jt</span>
+            </p>
+          </div>
+
+          <!-- Sub stats -->
+          <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+              <p class="text-[10px] text-white/50 uppercase tracking-wider mb-1">DSO Reduction</p>
+              <p class="text-xl font-display font-bold text-money-400 number-ticker"><span id="dsoReduction">-17</span> hari</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+              <p class="text-[10px] text-white/50 uppercase tracking-wider mb-1">ROI Bulan 1</p>
+              <p class="text-xl font-display font-bold text-cyan-300 number-ticker"><span id="roiMultiplier">9.4</span>x</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+              <p class="text-[10px] text-white/50 uppercase tracking-wider mb-1">Payback Period</p>
+              <p class="text-xl font-display font-bold text-white number-ticker"><span id="paybackDays">11</span> hari</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+              <p class="text-[10px] text-white/50 uppercase tracking-wider mb-1">Plan Rekomendasi</p>
+              <p class="text-xl font-display font-bold text-ember-400"><span id="recommendPlan">Growth</span></p>
+            </div>
+          </div>
+
+          <a href="#cta" class="block w-full text-center bg-gradient-to-r from-ember-500 to-ember-600 text-white py-3.5 rounded-full font-semibold btn-glow">
+            Diskusi dengan tim kami →
+          </a>
+          <p class="text-[10px] text-white/40 mt-3 text-center leading-relaxed">Estimasi berdasarkan rata-rata customer MINDX. Hasil aktual tergantung implementasi dan kepatuhan customer terhadap reminder.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     COMPARISON TABLE
+     ==================================================================== -->
+<section class="py-24 lg:py-32 bg-white">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-brand-700 bg-brand-50 rounded-full uppercase mb-4">Comparison</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+        Kenapa MINDX, <span class="gradient-text">bukan yang lain?</span>
+      </h2>
+      <p class="mt-6 text-lg text-slate-600">Satu suite untuk Chat + CRM + Collection. Banding kan dengan pakai 3 tools terpisah.</p>
+    </div>
+
+    <div class="mt-16 reveal overflow-x-auto">
+      <div class="min-w-[800px] bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+        <!-- Header row -->
+        <div class="grid grid-cols-5 bg-gradient-to-br from-slate-50 to-slate-100 border-b border-slate-200">
+          <div class="p-5 font-semibold text-slate-600 text-sm">Fitur</div>
+          <div class="p-5 text-center">
+            <p class="text-xs font-semibold text-slate-500 mb-1">Manual</p>
+            <p class="font-display font-bold text-slate-700">Excel + Telepon</p>
+          </div>
+          <div class="p-5 text-center">
+            <p class="text-xs font-semibold text-slate-500 mb-1">Competitor</p>
+            <p class="font-display font-bold text-slate-700">Qiscus</p>
+          </div>
+          <div class="p-5 text-center">
+            <p class="text-xs font-semibold text-slate-500 mb-1">Competitor</p>
+            <p class="font-display font-bold text-slate-700">Watto</p>
+          </div>
+          <div class="p-5 text-center bg-gradient-to-br from-brand-50 to-cyan-50 border-l-2 border-r-2 border-brand-500">
+            <p class="text-xs font-bold tracking-wider text-brand-600 uppercase mb-1">⭐ Recommended</p>
+            <p class="font-display font-bold text-brand-700 text-lg">MINDX Tagih</p>
+          </div>
+        </div>
+
+        <!-- Rows -->
+        <div class="divide-y divide-slate-100">
+          <!-- Row template -->
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">Bahasa Indonesia native</div>
+            <div class="p-4 text-center text-slate-400">⚠️ Manual</div>
+            <div class="p-4 text-center text-amber-500">⚠️ Translated</div>
+            <div class="p-4 text-center text-money-500">✓</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-money-500 font-bold">✓ Native</div>
+          </div>
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">Auto-reminder WhatsApp</div>
+            <div class="p-4 text-center text-red-400">✗</div>
+            <div class="p-4 text-center text-amber-500">⚠️ Basic</div>
+            <div class="p-4 text-center text-money-500">✓</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-money-500 font-bold">✓ Specialized</div>
+          </div>
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">Aging report dashboard</div>
+            <div class="p-4 text-center text-slate-400">Excel</div>
+            <div class="p-4 text-center text-red-400">✗</div>
+            <div class="p-4 text-center text-amber-500">⚠️</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-money-500 font-bold">✓</div>
+          </div>
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">Escalation logic otomatis</div>
+            <div class="p-4 text-center text-red-400">✗</div>
+            <div class="p-4 text-center text-red-400">✗</div>
+            <div class="p-4 text-center text-amber-500">⚠️</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-money-500 font-bold">✓</div>
+          </div>
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">UU PDP consent flow</div>
+            <div class="p-4 text-center text-amber-500">⚠️</div>
+            <div class="p-4 text-center text-amber-500">⚠️</div>
+            <div class="p-4 text-center text-amber-500">⚠️</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-money-500 font-bold">✓ Built-in</div>
+          </div>
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">Fokus pada collection</div>
+            <div class="p-4 text-center text-slate-400">N/A</div>
+            <div class="p-4 text-center text-red-400">✗ Omnichannel</div>
+            <div class="p-4 text-center text-red-400">✗ Chatbot</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-money-500 font-bold">✓ 100% Focus</div>
+          </div>
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">Harga entry</div>
+            <div class="p-4 text-center text-slate-700">Rp 0 + waktu lo</div>
+            <div class="p-4 text-center text-slate-700">Rp 3-5jt/bln</div>
+            <div class="p-4 text-center text-slate-700">Rp 2-4jt/bln</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-brand-700 font-bold">Rp 499rb/bln</div>
+          </div>
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">Implementasi</div>
+            <div class="p-4 text-center text-slate-400">—</div>
+            <div class="p-4 text-center text-slate-700">30-60 hari</div>
+            <div class="p-4 text-center text-slate-700">14-21 hari</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-money-500 font-bold">7-14 hari</div>
+          </div>
+          <div class="grid grid-cols-5 items-center text-sm">
+            <div class="p-4 font-medium text-slate-700">Support</div>
+            <div class="p-4 text-center text-slate-400">Self</div>
+            <div class="p-4 text-center text-slate-700">Email/ticket</div>
+            <div class="p-4 text-center text-slate-700">Email</div>
+            <div class="p-4 text-center bg-brand-50/50 border-l-2 border-r-2 border-brand-500 text-money-500 font-bold">WhatsApp langsung</div>
+          </div>
+        </div>
+      </div>
+      <p class="text-xs text-slate-400 text-center mt-4">*Data per Mei 2026 berdasarkan info publik. Update silakan email tim@mindx.id</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     CASE STUDY SPOTLIGHT
+     ==================================================================== -->
+<section class="py-24 lg:py-32 mesh-light relative">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal mb-16">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-money-700 bg-money-500/10 rounded-full uppercase mb-4">Case Study</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+        Cerita nyata: <span class="gradient-text-warm">satu owner, tiga AI</span>, hasilnya?
+      </h2>
+      <p class="mt-6 text-lg text-slate-600">Bagaimana Pak Budi pakai Chat + CRM + Tagih untuk transform bisnis distribusi dalam 90 hari.</p>
+    </div>
+
+    <div class="reveal max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
+      <div class="grid lg:grid-cols-5">
+        <!-- Left: Customer profile -->
+        <div class="lg:col-span-2 p-8 lg:p-12 bg-gradient-to-br from-slate-50 to-blue-50/50 border-r border-slate-100">
+          <!-- Avatar illustration -->
+          <div class="relative w-32 h-32 mx-auto lg:mx-0 mb-6">
+            <svg viewBox="0 0 120 120" class="w-full h-full">
+              <defs>
+                <linearGradient id="avatarGrad" x1="0" y1="0" x2="120" y2="120">
+                  <stop offset="0%" stop-color="#3b82f6"/>
+                  <stop offset="100%" stop-color="#22d3ee"/>
+                </linearGradient>
+                <linearGradient id="bgGrad" x1="0" y1="0" x2="120" y2="120">
+                  <stop offset="0%" stop-color="#dbeafe"/>
+                  <stop offset="100%" stop-color="#cffafe"/>
+                </linearGradient>
+              </defs>
+              <!-- Background circle -->
+              <circle cx="60" cy="60" r="58" fill="url(#bgGrad)" stroke="white" stroke-width="3"/>
+              <!-- Head -->
+              <circle cx="60" cy="48" r="20" fill="url(#avatarGrad)"/>
+              <!-- Glasses -->
+              <circle cx="52" cy="46" r="5" fill="none" stroke="white" stroke-width="2"/>
+              <circle cx="68" cy="46" r="5" fill="none" stroke="white" stroke-width="2"/>
+              <line x1="57" y1="46" x2="63" y2="46" stroke="white" stroke-width="2"/>
+              <!-- Smile -->
+              <path d="M52,53 Q60,58 68,53" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- Body -->
+              <path d="M30,110 Q30,80 60,80 Q90,80 90,110 Z" fill="url(#avatarGrad)"/>
+              <!-- Collar -->
+              <path d="M50,82 L60,92 L70,82" stroke="white" stroke-width="2" fill="none"/>
+            </svg>
+            <!-- Verified badge -->
+            <div class="absolute bottom-0 right-0 w-10 h-10 bg-money-500 rounded-full border-4 border-white flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+
+          <h3 class="font-display text-2xl font-bold text-slate-900 mb-1">Pak Budi Hartono</h3>
+          <p class="text-slate-600 mb-6">Owner, PT Maju Bersama Distribusi</p>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              <span class="text-slate-700">Building material distributor</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+              <span class="text-slate-700">Bandung, Jawa Barat</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2"/></svg>
+              <span class="text-slate-700">Rp 12 miliar revenue/tahun</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              <span class="text-slate-700">12 karyawan, 180 reseller aktif</span>
+            </div>
+          </div>
+
+          <!-- Quote -->
+          <div class="mt-8 pt-8 border-t border-slate-200">
+            <svg class="w-8 h-8 text-brand-200 mb-2" fill="currentColor" viewBox="0 0 24 24"><path d="M6.17 6C3.5 6 1.34 8.16 1.34 10.83V18h6.83v-7.17H4.51c0-1.84 1.49-3.33 3.33-3.33V6h-1.67zm10 0c-2.67 0-4.83 2.16-4.83 4.83V18h6.83v-7.17h-3.66c0-1.84 1.49-3.33 3.33-3.33V6h-1.67z"/></svg>
+            <p class="text-slate-700 italic leading-relaxed">"Yang gue suka, customer ga ngerasa di-tagih kasar. Hubungan baik tetap terjaga, tapi bayaran lebih lancar."</p>
+          </div>
+        </div>
+
+        <!-- Right: Results -->
+        <div class="lg:col-span-3 p-8 lg:p-12">
+          <p class="text-xs font-semibold tracking-widest text-brand-600 uppercase mb-2">Results — 90 hari pakai MINDX Full Suite</p>
+          <h4 class="font-display text-2xl font-bold text-slate-900 mb-8">3 produk, 1 dashboard, transformasi yang ngeganti cara kerja</h4>
+
+          <div class="grid sm:grid-cols-2 gap-4 mb-8">
+            <div class="bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-2xl p-5">
+              <div class="flex items-center justify-between mb-2">
+                <p class="text-xs font-semibold text-cyan-700 uppercase tracking-wider">📨 Chat — Response Time</p>
+              </div>
+              <p class="font-display text-3xl font-bold text-slate-900">3jam → 2s</p>
+              <p class="text-sm text-slate-600 mt-1">74% inquiry handle by AI 24/7</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-purple-200 rounded-2xl p-5">
+              <div class="flex items-center justify-between mb-2">
+                <p class="text-xs font-semibold text-purple-700 uppercase tracking-wider">📇 CRM — Repeat Rate</p>
+              </div>
+              <p class="font-display text-3xl font-bold text-slate-900">12% → 38%</p>
+              <p class="text-sm text-slate-600 mt-1">Dormant customer re-engaged</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-money-50 to-emerald-50 border border-money-200 rounded-2xl p-5">
+              <div class="flex items-center justify-between mb-2">
+                <p class="text-xs font-semibold text-money-700 uppercase tracking-wider">💰 Tagih — DSO</p>
+              </div>
+              <p class="font-display text-3xl font-bold text-slate-900">64 → 47 hari</p>
+              <p class="text-sm text-slate-600 mt-1">Cash unlocked Rp 380jt</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-5">
+              <div class="flex items-center justify-between mb-2">
+                <p class="text-xs font-semibold text-amber-700 uppercase tracking-wider">⏱️ Owner Time Saved</p>
+              </div>
+              <p class="font-display text-3xl font-bold text-slate-900">15 jam/mgg</p>
+              <p class="text-sm text-slate-600 mt-1">Dari CS + admin + tagih</p>
+            </div>
+          </div>
+
+          <!-- Progress bar visual -->
+          <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-sm font-semibold text-slate-700">DSO Progress</p>
+              <p class="text-xs text-slate-500">90 hari</p>
+            </div>
+            <div class="space-y-3">
+              <div>
+                <div class="flex justify-between text-xs mb-1"><span class="text-slate-600">Sebelum MINDX</span><span class="font-bold text-red-500">64 hari</span></div>
+                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-red-400 to-rose-500 rounded-full" style="width: 100%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1"><span class="text-slate-600">Setelah MINDX (90 hari)</span><span class="font-bold text-money-600">47 hari</span></div>
+                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-money-400 to-emerald-500 rounded-full" style="width: 73%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-xs text-slate-400 text-center mt-6 italic">*Case study ilustratif dengan figur representatif. Data based on proyeksi pilot internal. Real customer case studies akan dipublish post-launch.</p>
+  </div>
+</section>
+
+<!-- ====================================================================
+     SECURITY & COMPLIANCE
+     ==================================================================== -->
+<section id="security" class="py-24 lg:py-32 bg-white relative">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-money-700 bg-money-500/10 rounded-full uppercase mb-4">Security & Compliance</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+        Data lo aman. <span class="gradient-text">Janji.</span>
+      </h2>
+      <p class="mt-6 text-lg text-slate-600">Compliance bukan afterthought. Kita bangun MINDX dari awal dengan privacy-first principle.</p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-3 gap-6 lg:gap-8">
+      <!-- UU PDP -->
+      <div class="reveal card-hover bg-gradient-to-br from-white to-slate-50 rounded-3xl p-8 border border-slate-100 shadow-sm">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-money-500 to-emerald-600 flex items-center justify-center mb-6 shadow-lg shadow-money-500/30">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-slate-900 mb-3">UU PDP Compliant</h3>
+        <p class="text-slate-600 leading-relaxed mb-4">Sesuai UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi. Consent flow ketat, opt-out one-click, frequency cap built-in.</p>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Consent management built-in</li>
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> DPA template tersedia</li>
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Audit trail semua aktivitas</li>
+        </ul>
+      </div>
+
+      <!-- Encryption -->
+      <div class="reveal card-hover bg-gradient-to-br from-white to-slate-50 rounded-3xl p-8 border border-slate-100 shadow-sm" style="transition-delay: 0.1s">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-cyan-500 flex items-center justify-center mb-6 shadow-lg shadow-brand-500/30">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-slate-900 mb-3">End-to-End Encrypted</h3>
+        <p class="text-slate-600 leading-relaxed mb-4">AES-256 untuk data at rest, TLS 1.3 untuk data in transit. Standard yang dipakai bank, kita pakai juga.</p>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> AES-256 encryption</li>
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Role-based access control</li>
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Pen-test setiap 6 bulan</li>
+        </ul>
+      </div>
+
+      <!-- Indonesia hosting -->
+      <div class="reveal card-hover bg-gradient-to-br from-white to-slate-50 rounded-3xl p-8 border border-slate-100 shadow-sm" style="transition-delay: 0.2s">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center mb-6 shadow-lg shadow-red-500/30">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 0h4a2 2 0 012 2v8a2 2 0 01-2 2H10a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-slate-900 mb-3">Hosted di Indonesia 🇮🇩</h3>
+        <p class="text-slate-600 leading-relaxed mb-4">Data ga keluar wilayah Republik Indonesia. Compliance regulasi lokal + latency lebih cepat untuk customer lo.</p>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Data residency in-country</li>
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Backup harian, 30 hari retention</li>
+          <li class="flex items-center gap-2 text-slate-700"><svg class="w-4 h-4 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> 99.9% uptime SLA</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     PRICING
+     ==================================================================== -->
+<section id="pricing" class="py-24 lg:py-32 mesh-light relative overflow-hidden">
+  <div class="absolute inset-0 grid-pattern opacity-30"></div>
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-ember-700 bg-ember-500/10 rounded-full uppercase mb-4">Pricing</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+        Harga yang <span class="gradient-text-warm">jujur</span>. Mulai dari coba gratis.
+      </h2>
+      <p class="mt-6 text-lg text-slate-600">Bayar bulanan, atau hemat 2 bulan dengan annual prepay. Cancel kapan saja.</p>
+    </div>
+
+    <!-- Founding Member Banner -->
+    <div class="reveal mt-12 max-w-4xl mx-auto bg-gradient-to-r from-ember-500 to-ember-600 rounded-2xl p-6 lg:p-8 shadow-xl shadow-ember-500/30">
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <div class="text-5xl">🎯</div>
+        <div class="flex-1 text-white text-center md:text-left">
+          <p class="text-xs font-bold tracking-widest uppercase mb-1 text-white/80">Limited Offer</p>
+          <h3 class="font-display text-xl font-bold">Founding Member: 50 customer pertama dapat 50% diskon lifetime di semua plan</h3>
+          <p class="text-sm text-white/90 mt-1">Termasuk Growth Bundle (Chat + CRM) dan Business Full Suite. Plus direct line ke founder.</p>
+        </div>
+        <a href="#cta" class="bg-white text-ember-600 font-bold px-6 py-3 rounded-full whitespace-nowrap hover:bg-white/95 transition shadow-lg">Apply Founding Member →</a>
+      </div>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+
+      <!-- Starter (Rp 1.5jt) -->
+      <div class="card-hover bg-white rounded-3xl border border-slate-200 p-7 shadow-sm flex flex-col">
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-slate-500 mb-2">Starter</p>
+          <p class="text-xs text-slate-500 mb-5">1 produk pilihan lo</p>
+          <div class="flex items-baseline gap-1 mb-1">
+            <span class="font-display text-4xl font-bold text-slate-900">Rp 1.5</span><span class="text-slate-500">jt</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-6">/bulan · Hemat 2 bulan annual</p>
+          <ul class="space-y-3 text-sm mb-8">
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700"><strong>Pilih 1: Chat, CRM, atau Tagih</strong></span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">500 conv/bulan</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">2 user</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">WhatsApp + 1 channel</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">Email support</span></li>
+          </ul>
+        </div>
+        <a href="#cta" class="block text-center bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 rounded-full transition">Coba 14 Hari</a>
+      </div>
+
+      <!-- Growth Bundle (Popular) -->
+      <div class="pricing-popular relative card-hover bg-white rounded-3xl border-2 border-brand-500 p-7 shadow-2xl shadow-brand-500/20 flex flex-col">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-500 to-cyan-500 text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg">⭐ POPULAR</div>
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-brand-600 mb-2">Growth Bundle</p>
+          <p class="text-xs text-slate-500 mb-5">Chat + CRM (saling sync)</p>
+          <div class="flex items-baseline gap-1 mb-1">
+            <span class="font-display text-4xl font-bold text-slate-900">Rp 3</span><span class="text-slate-500">jt</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-1">/bulan</p>
+          <p class="text-xs text-money-600 font-semibold mb-6">Hemat Rp 6jt/tahun vs beli terpisah</p>
+          <ul class="space-y-3 text-sm mb-8">
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700"><strong>MINDX Chat + CRM</strong></span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">2.000 conv/bulan</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">5 user</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">All channels (WA, IG, FB, Web)</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">WhatsApp support priority</span></li>
+          </ul>
+        </div>
+        <a href="#cta" class="block text-center bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white font-semibold py-3 rounded-full transition shadow-lg shadow-brand-500/30">Coba 14 Hari →</a>
+      </div>
+
+      <!-- Business (Full Suite) -->
+      <div class="card-hover bg-white rounded-3xl border border-slate-200 p-7 shadow-sm flex flex-col">
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-slate-500 mb-2">Business</p>
+          <p class="text-xs text-slate-500 mb-5">Full Suite: 3 produk</p>
+          <div class="flex items-baseline gap-1 mb-1">
+            <span class="font-display text-4xl font-bold text-slate-900">Rp 5</span><span class="text-slate-500">jt</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-1">/bulan</p>
+          <p class="text-xs text-money-600 font-semibold mb-6">Hemat Rp 12jt/tahun</p>
+          <ul class="space-y-3 text-sm mb-8">
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700"><strong>Chat + CRM + Tagih</strong></span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">10.000 conv/bulan</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">15 user</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">Integrasi Accurate/Jurnal/Mekari</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-money-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-slate-700">Dedicated AM 3 bulan</span></li>
+          </ul>
+        </div>
+        <a href="#cta" class="block text-center bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 rounded-full transition">Coba 14 Hari</a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="card-hover relative bg-gradient-to-br from-navy-900 to-navy-950 rounded-3xl p-7 shadow-2xl flex flex-col text-white overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-400 to-money-400 rounded-full blur-3xl opacity-30 -translate-y-10 translate-x-10"></div>
+        <div class="relative flex-1">
+          <p class="text-sm font-semibold text-cyan-300 mb-2">Enterprise</p>
+          <p class="text-xs text-white/60 mb-5">Multi-branch / chain</p>
+          <div class="flex items-baseline gap-1 mb-1">
+            <span class="font-display text-3xl font-bold">Custom</span>
+          </div>
+          <p class="text-xs text-white/60 mb-6">Mulai Rp 10jt/bulan</p>
+          <ul class="space-y-3 text-sm mb-8">
+            <li class="flex gap-2"><svg class="w-5 h-5 text-cyan-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-white/90">Unlimited everything</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-cyan-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-white/90">API access + custom integration</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-cyan-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-white/90">White-label option</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-cyan-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-white/90">SLA 99.99%</span></li>
+            <li class="flex gap-2"><svg class="w-5 h-5 text-cyan-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span class="text-white/90">Ongoing dedicated AM</span></li>
+          </ul>
+        </div>
+        <a href="#cta" class="relative block text-center bg-white text-slate-900 font-semibold py-3 rounded-full hover:bg-white/95 transition">Hubungi Kami</a>
+      </div>
+    </div>
+
+    <p class="text-center text-sm text-slate-500 mt-10">💡 Bundle = hemat hingga Rp 12jt/tahun · Annual prepay hemat 2 bulan · 30 hari money-back guarantee · No setup fee</p>
+  </div>
+</section>
+
+<!-- ====================================================================
+     ROADMAP
+     ==================================================================== -->
+<section id="industries" class="py-24 lg:py-32 bg-gradient-to-br from-navy-950 via-navy-900 to-brand-900 relative overflow-hidden">
+  <!-- Background glow -->
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-money-500/15 rounded-full blur-3xl"></div>
+
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 rounded-full uppercase mb-4">Industries We Serve</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+        Industri yang udah <span class="gradient-text">dapet untung</span> dari MINDX.
+      </h2>
+      <p class="mt-6 text-lg text-white/70">Dari klinik kecantikan sampai distributor logistik — MINDX di-tune untuk pain spesifik tiap industri.</p>
+    </div>
+
+    <div class="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Klinik/Beauty -->
+      <div class="reveal glass rounded-2xl p-6 card-hover">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center mb-4 shadow-lg shadow-pink-500/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-bold text-white mb-2">Klinik · Beauty · Dental</h3>
+        <p class="text-sm text-white/70 mb-4">Booking otomatis, no-show reminder, follow-up treatment. No-show rate turun 45%.</p>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full">Chat</span>
+          <span class="text-[10px] font-semibold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">CRM</span>
+          <span class="text-[10px] font-semibold bg-money-500/20 text-money-300 px-2 py-0.5 rounded-full">Tagih (DP)</span>
+        </div>
+      </div>
+
+      <!-- Distributor -->
+      <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.05s">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mb-4 shadow-lg shadow-amber-500/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-bold text-white mb-2">Distributor · Wholesale</h3>
+        <p class="text-sm text-white/70 mb-4">Order otomatis lewat WA, customer history, auto-tagihan. DSO turun 17 hari.</p>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full">Chat</span>
+          <span class="text-[10px] font-semibold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">CRM</span>
+          <span class="text-[10px] font-semibold bg-money-500/20 text-money-300 px-2 py-0.5 rounded-full">Tagih</span>
+        </div>
+      </div>
+
+      <!-- Logistik -->
+      <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.1s">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-bold text-white mb-2">Logistik · Transport</h3>
+        <p class="text-sm text-white/70 mb-4">Tracking inquiry handled by AI, COD collection reminder, complaint routing.</p>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full">Chat</span>
+          <span class="text-[10px] font-semibold bg-money-500/20 text-money-300 px-2 py-0.5 rounded-full">Tagih (COD)</span>
+        </div>
+      </div>
+
+      <!-- F&B -->
+      <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.15s">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center mb-4 shadow-lg shadow-yellow-500/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-bold text-white mb-2">F&B · Multi-Branch</h3>
+        <p class="text-sm text-white/70 mb-4">Reservation booking, customer loyalty, feedback collection, promo broadcast.</p>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full">Chat</span>
+          <span class="text-[10px] font-semibold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">CRM</span>
+        </div>
+      </div>
+
+      <!-- Agency/Jasa -->
+      <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.2s">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-4 shadow-lg shadow-indigo-500/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-bold text-white mb-2">Agency · Jasa</h3>
+        <p class="text-sm text-white/70 mb-4">Lead qualification, quote follow-up, project status update, invoice reminder.</p>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full">Chat</span>
+          <span class="text-[10px] font-semibold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">CRM</span>
+          <span class="text-[10px] font-semibold bg-money-500/20 text-money-300 px-2 py-0.5 rounded-full">Tagih</span>
+        </div>
+      </div>
+
+      <!-- Finance/Multifinance -->
+      <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.25s">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-money-500 to-emerald-500 flex items-center justify-center mb-4 shadow-lg shadow-money-500/30">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-bold text-white mb-2">Finance · Multifinance</h3>
+        <p class="text-sm text-white/70 mb-4">Cicilan reminder, debtor portfolio, escalation logic, compliance UU PDP.</p>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[10px] font-semibold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">CRM</span>
+          <span class="text-[10px] font-semibold bg-money-500/20 text-money-300 px-2 py-0.5 rounded-full">Tagih</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center reveal">
+      <p class="text-white/60 mb-4">Industri lo ga ada di sini? Tetep bisa pakai MINDX.</p>
+      <a href="#cta" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-semibold transition">
+        Diskusi use case lo →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     FOUNDING MEMBER / TESTIMONIALS
+     ==================================================================== -->
+<section class="py-24 lg:py-32 bg-white">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+      <!-- Left: Honest Founding Member CTA -->
+      <div class="reveal">
+        <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-ember-700 bg-ember-500/10 rounded-full uppercase mb-4">Founding Member Program</span>
+        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 mb-6">
+          Kami baru mulai. <br/>
+          Mau jadi <span class="gradient-text-warm">bagian cerita kami?</span>
+        </h2>
+        <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+          Honest disclosure: MINDX baru launch Mei 2026. Kalau lo gabung sekarang sebagai Founding Member, lo dapet benefit yang ga akan ada lagi setelah kami scale.
+        </p>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-ember-100 text-ember-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-900">50% diskon lifetime</p>
+              <p class="text-sm text-slate-600">Selama akun aktif, harga lo ga akan naik. Termasuk untuk product upgrade ke Bundle/Full Suite.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brand-100 text-brand-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/><path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-900">Direct line ke founder</p>
+              <p class="text-sm text-slate-600">WhatsApp langsung ke Riko (founder). Feedback masuk, langsung di-prioritize.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-money-100 text-money-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-900">Vote untuk feature priority</p>
+              <p class="text-sm text-slate-600">Founding Member punya hak vote untuk roadmap. Lo butuh apa, kami bangun duluan.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-900">Logo & case study (kalau bersedia)</p>
+              <p class="text-sm text-slate-600">Optional: lo dapet bonus 1 bulan gratis kalau bersedia jadi case study/testimonial setelah 90 hari.</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="#cta" class="inline-flex items-center gap-2 bg-ember-500 text-white px-8 py-4 rounded-full font-semibold btn-glow">
+          Apply Founding Member
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+
+        <!-- Spots remaining -->
+        <div class="mt-6 flex items-center gap-3">
+          <div class="flex -space-x-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-rose-400 border-2 border-white flex items-center justify-center text-white text-xs font-bold">A</div>
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 border-2 border-white flex items-center justify-center text-white text-xs font-bold">B</div>
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-fuchsia-400 border-2 border-white flex items-center justify-center text-white text-xs font-bold">C</div>
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-400 border-2 border-white flex items-center justify-center text-white text-xs font-bold">D</div>
+            <div class="w-8 h-8 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-slate-600 text-xs font-bold">+</div>
+          </div>
+          <p class="text-sm text-slate-600"><strong>47 slot</strong> tersisa dari 50 Founding Member</p>
+        </div>
+      </div>
+
+      <!-- Right: Survey data card -->
+      <div class="reveal">
+        <div class="bg-gradient-to-br from-slate-900 to-navy-900 rounded-3xl p-8 lg:p-10 shadow-2xl text-white relative overflow-hidden">
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-money-500/20 rounded-full blur-3xl"></div>
+          <div class="relative">
+            <span class="inline-block px-3 py-1 text-xs font-bold tracking-widest text-cyan-300 bg-cyan-400/10 border border-cyan-400/30 rounded-full uppercase mb-4">Market Validation</span>
+            <h3 class="font-display text-2xl font-bold mb-6">Survey 100 distributor UMKM (Maret 2026)</h3>
+
+            <div class="space-y-5">
+              <div>
+                <div class="flex items-baseline justify-between mb-2">
+                  <p class="text-sm text-white/70">Habisin > 10 jam/minggu untuk follow-up invoice</p>
+                  <p class="font-display text-2xl font-bold text-money-400">73%</p>
+                </div>
+                <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-money-400 to-emerald-400 rounded-full" style="width: 73%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-baseline justify-between mb-2">
+                  <p class="text-sm text-white/70">Pernah lose hubungan sama customer karena nagih</p>
+                  <p class="font-display text-2xl font-bold text-cyan-400">58%</p>
+                </div>
+                <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-cyan-400 to-brand-400 rounded-full" style="width: 58%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-baseline justify-between mb-2">
+                  <p class="text-sm text-white/70">DSO &gt; 60 hari (cash flow strained)</p>
+                  <p class="font-display text-2xl font-bold text-ember-400">64%</p>
+                </div>
+                <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-ember-400 to-red-400 rounded-full" style="width: 64%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-baseline justify-between mb-2">
+                  <p class="text-sm text-white/70">Mau coba AI untuk collection</p>
+                  <p class="font-display text-2xl font-bold text-purple-400">81%</p>
+                </div>
+                <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-purple-400 to-fuchsia-400 rounded-full" style="width: 81%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-white/10">
+              <p class="text-sm text-white/80 italic leading-relaxed">"Ini bukan problem kecil — ini #1 pain point hampir semua distributor UMKM yang kami wawancarai."</p>
+              <p class="text-xs text-cyan-300 mt-2 font-semibold">— MINDX Research Team, Maret 2026</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     FAQ
+     ==================================================================== -->
+<section id="faq" class="py-24 lg:py-32 mesh-light">
+  <div class="mx-auto max-w-4xl px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal mb-16">
+      <span class="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-brand-700 bg-brand-50 rounded-full uppercase mb-4">FAQ</span>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+        Pertanyaan yang sering muncul.
+      </h2>
+    </div>
+
+    <div class="reveal space-y-3">
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Apakah ini melanggar UU PDP?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          Tidak. MINDX dirancang dari awal compliance UU PDP No. 27/2022. Kami implementasi consent flow yang ketat: customer lo harus pernah memberikan persetujuan via WhatsApp Business sebelumnya. Frequency cap built-in (max 1 reminder per invoice per 3 hari). Opt-out one-click — kalau customer bilang "stop", auto-blacklist nomor mereka dari reminder.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Customer saya bisa minta MINDX berhenti kirim WA?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          Bisa kapan saja. Customer cukup bilang "STOP", "berhenti", "unsubscribe" dalam balasan WhatsApp — MINDX auto-detect dan blacklist nomor itu. Logged di dashboard lo, dengan timestamp. Re-opt-in juga supported kalau mereka berubah pikiran.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Berapa biaya WhatsApp per pesan?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          MINDX termasuk fair-use quota WhatsApp Business API: ~3.000 pesan/bulan untuk Growth plan. Cukup untuk 500 invoice × 6 reminder/invoice. Kalau lewat quota, biaya Meta sekitar Rp 100-200/pesan (utility template). Kita transparent — semua biaya WhatsApp pass-through, tidak ada markup.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Apa bedanya MINDX dengan Qiscus atau Watto?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          Qiscus omnichannel customer service platform fokus inquiry. Watto chatbot AI generic. MINDX kasih lo <strong>3 produk yang ngeluang saling sync</strong>: Chat handle inquiry, CRM organize data, Tagih amankan cash flow — semua di 1 dashboard, 1 invoice. Plus harga bundle kami kompetitif.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Bisa pakai 1 produk dulu, atau harus beli semua sekaligus?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          Bisa banget. Mulai dari <strong>Starter Rp 1.5jt</strong> dengan 1 produk pilihan lo (Chat, CRM, atau Tagih). Banyak customer kami mulai dengan Chat dulu, baru tambah CRM setelah 2-3 bulan. Upgrade ke Growth Bundle (Chat+CRM) atau Business (semua 3) kapanpun — tinggal klik di dashboard. Harga di-prorate fair.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>MINDX Chat ngerti Bahasa Indonesia slang & daerah?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          Ya. MINDX di-train pada juta-an conversation B2C Indonesia — termasuk slang Jakarta ("gws", "tp", "jg"), nuansa Sunda/Jawa/Padang, dan formal style. Lo bisa custom tone per channel: santai untuk WA, semi-formal untuk Instagram, formal untuk Email. Plus, AI lo akan terus belajar dari history conversation customer lo sendiri.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Kalau saya pakai Accurate / Jurnal, bisa connect?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          Yes. Integrasi Accurate Online, Jurnal, dan Mekari Buku tersedia di plan Business ke atas (Q3 2026). Untuk plan Starter & Growth, lo upload Excel/CSV manual — sync semi-otomatis. Untuk software accounting lain, kami support via webhook & API.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Berapa lama implementasi untuk 500 invoice?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          Untuk 500 invoice aktif: 7-14 hari total. Hari 1-3: setup WhatsApp BSP credentials + customisasi template. Hari 4-7: upload data, test soft launch ke 20 invoice. Hari 8-14: full launch + monitoring. Lo akan dapat dedicated AM yang bantu setiap hari di 14 hari pertama.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Kalau customer ga bayar setelah reminder MINDX?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          MINDX bukan magic wand — kalau customer memang ga punya uang atau ga niat bayar, ga ada tools yang bisa paksa. Tapi: MINDX kasih lo <strong>visibility</strong> (siapa yang persisten ga bayar) + <strong>documented trail</strong> (untuk eskalasi legal kalau perlu) + <strong>escalation logic</strong> (otomatis notify lo untuk personal follow-up). Average customer: 82% on-time rate setelah 90 hari.
+        </div>
+      </details>
+
+      <details class="faq-item bg-white border border-slate-200 rounded-2xl p-6 group">
+        <summary class="flex items-center justify-between font-display text-lg font-semibold text-slate-900">
+          <span>Apakah MINDX cocok untuk industri saya (selain distributor)?</span>
+          <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></span>
+        </summary>
+        <div class="mt-4 text-slate-600 leading-relaxed">
+          Phase 1 (sekarang) kami fokus banget di distributor/wholesale karena pain-nya paling akut. Tapi prinsip "tagih utang lewat WhatsApp" berlaku juga untuk: klinik (DP treatment), logistik (COD), agency (invoice freelance), F&B multi-branch (reseller payment), multifinance (cicilan). Hubungi kami untuk diskusi spesifik industri lo.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     FINAL CTA
+     ==================================================================== -->
+<section id="cta" class="py-24 lg:py-32 relative overflow-hidden aurora-bg">
+  <div class="glow-orb bg-ember-500/20 w-96 h-96 -top-20 right-1/4"></div>
+  <div class="glow-orb bg-cyan-400/30 w-80 h-80 bottom-0 left-10"></div>
+
+  <div class="relative mx-auto max-w-4xl px-6 lg:px-8 text-center text-white">
+    <div class="reveal">
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+        Siap upgrade <span class="gradient-text">cara kerja</span> bisnis lo?
+      </h2>
+      <p class="mt-6 text-lg lg:text-xl text-white/80 max-w-2xl mx-auto">
+        Pilih 1 produk dulu (Rp 1.5jt), atau langsung bundle. Trial 14 hari, tanpa kartu kredit, tanpa komitmen. Setup pertama dipandu tim kami.
+      </p>
+
+      <!-- Form -->
+      <form id="demoForm" class="mt-12 max-w-2xl mx-auto" onsubmit="return handleDemoSubmit(event)">
+        <div class="glass rounded-2xl p-6 lg:p-8">
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-xs font-medium text-white/70 mb-2 text-left">Nama lengkap</label>
+              <input type="text" required placeholder="Contoh: Riko Maulana" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400 focus:bg-white/15 transition" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-white/70 mb-2 text-left">WhatsApp</label>
+              <input type="tel" required placeholder="08xx atau +62xx" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-cyan-400 focus:bg-white/15 transition" />
+            </div>
+          </div>
+          <div class="mb-6">
+            <label class="block text-xs font-medium text-white/70 mb-2 text-left">Industri (optional)</label>
+            <select class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 focus:bg-white/15 transition">
+              <option value="distributor" class="bg-slate-800">Distributor / Wholesale</option>
+              <option value="klinik" class="bg-slate-800">Klinik / Beauty / Dental</option>
+              <option value="logistik" class="bg-slate-800">Logistik</option>
+              <option value="agency" class="bg-slate-800">Agency / Jasa</option>
+              <option value="fnb" class="bg-slate-800">F&B Multi-branch</option>
+              <option value="finance" class="bg-slate-800">Finance / Multifinance</option>
+              <option value="lainnya" class="bg-slate-800">Lainnya</option>
+            </select>
+          </div>
+          <button type="submit" class="w-full bg-ember-500 hover:bg-ember-600 text-white py-4 rounded-xl font-semibold btn-glow text-lg">
+            Mulai Demo Gratis 14 Hari →
+          </button>
+          <p class="text-xs text-white/50 mt-4">
+            Dengan submit, lo agree dengan <a href="#" class="underline">Privacy Policy</a> kami. We promise: no spam, no shady stuff.
+          </p>
+        </div>
+      </form>
+
+      <!-- Alternative CTA -->
+      <p class="mt-8 text-white/70">
+        Atau langsung
+        <a href="https://wa.me/628123456789?text=Halo%2C%20saya%20tertarik%20dengan%20MINDX%20Tagih" target="_blank" class="font-semibold text-cyan-300 hover:text-cyan-200 underline">
+          chat WhatsApp kami →
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================
+     FOOTER
+     ==================================================================== -->
+<footer class="bg-navy-950 text-white pt-16 pb-8 relative overflow-hidden">
+  <div class="absolute inset-0 grid-pattern opacity-5"></div>
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
+      <!-- Logo + Tagline -->
+      <div class="lg:col-span-2">
+        <div class="flex items-center gap-2.5 mb-4">
+          <svg viewBox="0 0 40 40" fill="none" class="w-10 h-10"><defs><linearGradient id="footerLogo" x1="0" y1="0" x2="40" y2="40"><stop offset="0%" stop-color="#3b82f6"/><stop offset="50%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs><rect x="2" y="2" width="36" height="36" rx="10" fill="url(#footerLogo)"/><path d="M11 28V12L16 12L20 22L24 12L29 12V28" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          <span class="font-display font-bold text-2xl">MINDX<span class="gradient-text">.ai</span></span>
+        </div>
+        <p class="text-white/60 leading-relaxed mb-6 max-w-sm">
+          Platform AI yang bantu UMKM Indonesia menjaga arus kas — dimulai dari otomasi penagihan via WhatsApp.
+        </p>
+        <div class="flex items-center gap-3">
+          <a href="#" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="https://wa.me/628123456789" class="w-9 h-9 rounded-full bg-money-500 hover:bg-money-600 flex items-center justify-center transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Products -->
+      <div>
+        <h4 class="font-semibold text-white mb-4">Produk</h4>
+        <ul class="space-y-3 text-sm text-white/60">
+          <li><a href="#solution" class="hover:text-white transition">MINDX Chat</a></li>
+          <li><a href="#solution" class="hover:text-white transition">MINDX CRM</a></li>
+          <li><a href="#solution" class="hover:text-white transition">MINDX Tagih</a></li>
+          <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
+          <li><a href="#industries" class="hover:text-white transition">Industri</a></li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <h4 class="font-semibold text-white mb-4">Resources</h4>
+        <ul class="space-y-3 text-sm text-white/60">
+          <li><a href="#" class="hover:text-white transition">Blog</a></li>
+          <li><a href="#" class="hover:text-white transition">Case Studies</a></li>
+          <li><a href="#roi" class="hover:text-white transition">ROI Calculator</a></li>
+          <li><a href="#" class="hover:text-white transition">UU PDP Guide</a></li>
+          <li><a href="#" class="hover:text-white transition">API Docs</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <h4 class="font-semibold text-white mb-4">Company</h4>
+        <ul class="space-y-3 text-sm text-white/60">
+          <li><a href="#" class="hover:text-white transition">About</a></li>
+          <li><a href="#security" class="hover:text-white transition">Security</a></li>
+          <li><a href="#" class="hover:text-white transition">Partners</a></li>
+          <li><a href="#" class="hover:text-white transition">Careers</a></li>
+          <li><a href="mailto:hello@mindx.id" class="hover:text-white transition">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-divider my-12"></div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
+      <p>© 2026 PT MINDX Teknologi Indonesia · Bandung 🇮🇩</p>
+      <div class="flex items-center gap-6">
+        <a href="#" class="hover:text-white transition">Privacy</a>
+        <a href="#" class="hover:text-white transition">Terms</a>
+        <a href="#" class="hover:text-white transition">DPA</a>
+        <a href="#" class="hover:text-white transition">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float Button -->
+<a href="https://wa.me/628123456789?text=Halo%2C%20saya%20tertarik%20dengan%20MINDX%20Tagih" target="_blank" class="fixed bottom-6 right-6 z-40 w-14 h-14 bg-[#25D366] hover:bg-[#1DA851] text-white rounded-full flex items-center justify-center shadow-2xl shadow-[#25D366]/40 transition-all hover:scale-110 group">
+  <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+  <span class="absolute right-full mr-3 bg-slate-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Chat WhatsApp</span>
+  <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
+  <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+</a>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl opacity-0 transition-all duration-300 pointer-events-none z-50 max-w-sm text-center">
+  <p id="toastMessage">Berhasil!</p>
+</div>
+
+<!-- ====================================================================
+     JAVASCRIPT
+     ==================================================================== -->
+<script>
+  // Header scroll behavior
+  const header = document.getElementById('header');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      header.classList.add('bg-white/80', 'backdrop-blur-lg', 'shadow-sm');
+      header.classList.remove('bg-transparent');
+    } else {
+      header.classList.remove('bg-white/80', 'backdrop-blur-lg', 'shadow-sm');
+      header.classList.add('bg-transparent');
+    }
+    lastScroll = window.scrollY;
+  });
+
+  // Mobile menu
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileMenuClose = document.getElementById('mobileMenuClose');
+  mobileMenuBtn?.addEventListener('click', () => {
+    mobileMenu.classList.remove('hidden-menu');
+    document.body.style.overflow = 'hidden';
+  });
+  mobileMenuClose?.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden-menu');
+    document.body.style.overflow = '';
+  });
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden-menu');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Reveal on scroll (Intersection Observer)
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ROI Calculator
+  const outstandingInput = document.getElementById('outstandingInput');
+  const dsoInput = document.getElementById('dsoInput');
+  const invoiceInput = document.getElementById('invoiceInput');
+  const outRecLabel = document.getElementById('outRecLabel');
+  const dsoLabel = document.getElementById('dsoLabel');
+  const invoiceLabel = document.getElementById('invoiceLabel');
+  const cashUnlocked = document.getElementById('cashUnlocked');
+  const dsoReduction = document.getElementById('dsoReduction');
+  const roiMultiplier = document.getElementById('roiMultiplier');
+  const paybackDays = document.getElementById('paybackDays');
+  const recommendPlan = document.getElementById('recommendPlan');
+
+  function formatRupiah(n) {
+    if (n >= 1_000_000_000) return 'Rp ' + (n / 1_000_000_000).toFixed(1) + 'M';
+    if (n >= 1_000_000) return 'Rp ' + Math.round(n / 1_000_000) + 'jt';
+    return 'Rp ' + (n / 1000).toFixed(0) + 'rb';
+  }
+
+  function calculateROI() {
+    const outstanding = parseInt(outstandingInput.value);
+    const dso = parseInt(dsoInput.value);
+    const invoiceVol = parseInt(invoiceInput.value);
+
+    // Update input labels
+    outRecLabel.textContent = formatRupiah(outstanding);
+    dsoLabel.textContent = dso + ' hari';
+    invoiceLabel.textContent = invoiceVol + ' invoice';
+
+    // Calculations
+    const daysSaved = Math.round(dso * 0.28); // ~28% reduction average
+    const cashUnlockedMonthly = Math.round(outstanding * (daysSaved / dso));
+
+    // Plan recommendation based on invoice volume
+    let plan, planPrice;
+    if (invoiceVol <= 100) { plan = 'Starter'; planPrice = 499000; }
+    else if (invoiceVol <= 500) { plan = 'Growth'; planPrice = 1500000; }
+    else if (invoiceVol <= 2000) { plan = 'Business'; planPrice = 3500000; }
+    else { plan = 'Enterprise'; planPrice = 7000000; }
+
+    const roi = (cashUnlockedMonthly / planPrice).toFixed(1);
+    const payback = Math.round(planPrice / (cashUnlockedMonthly / 30));
+
+    // Update output
+    cashUnlocked.textContent = formatRupiah(cashUnlockedMonthly);
+    dsoReduction.textContent = '-' + daysSaved;
+    roiMultiplier.textContent = roi;
+    paybackDays.textContent = payback;
+    recommendPlan.textContent = plan;
+  }
+
+  outstandingInput?.addEventListener('input', calculateROI);
+  dsoInput?.addEventListener('input', calculateROI);
+  invoiceInput?.addEventListener('input', calculateROI);
+  calculateROI();
+
+  // Demo form
+  function handleDemoSubmit(e) {
+    e.preventDefault();
+    showToast('🎉 Terima kasih! Tim kami akan reach out via WhatsApp dalam 24 jam.');
+    e.target.reset();
+    return false;
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    toastMessage.textContent = message;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translate(-50%, 0)';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translate(-50%, 20px)';
+    }, 4000);
+  }
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        const headerOffset = 80;
+        const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Product tabs switcher
+  document.querySelectorAll('.product-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.dataset.tab;
+      document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('tab-active'));
+      tab.classList.add('tab-active');
+      document.querySelectorAll('.product-content').forEach(c => c.classList.add('hidden'));
+      document.getElementById('tab-' + tabName).classList.remove('hidden');
+    });
+  });
+
+  // Initialize Lucide icons (if loaded)
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+</script>
+
+</body>
+</html>
